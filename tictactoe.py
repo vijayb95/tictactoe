@@ -64,20 +64,30 @@ def winner(board):
     """
     Returns the winner of the game, if there is one.
     """
-    if (all(board[0]) or all(board[1]) or all(board[2])) and (
-            board[0][0] == 'X' or board[1][0] == 'X' or board[2][0] == 'X'):
-        return 'X'
-    elif (all(board[0]) or all(board[1]) or all(board[2])) and (
-            board[0][0] == 'O' or board[1][0] == 'O' or board[2][0] == 'O'):
-        return 'O'
-    elif board[0][0] == 'O' and board[1][1] == 'O' and board[2][2] == 'O':
-        return 'O'
-    elif board[0][0] == 'X' and board[1][1] == 'X' and board[2][2] == 'X':
-        return 'X'
-    elif board[0][2] == 'O' and board[1][1] == 'O' and board[2][0] == 'O':
-        return 'O'
-    elif board[0][2] == 'X' and board[1][1] == 'X' and board[2][0] == 'X':
-        return 'X'
+    if (board[0][0] == X and board[0][1] == X and board[0][2] == X) or (
+            board[1][0] == X and board[1][1] == X and board[1][2] == X) or(
+                board[2][0] == X and board[2][1] == X and board[2][2] == X):
+        return X
+    elif (board[0][0] == O and board[0][1] == O and board[0][2] == O) or (
+            board[1][0] == O and board[1][1] == O and board[1][2] == O) or(
+                board[2][0] == O and board[2][1] == O and board[2][2] == O):
+        return O
+    elif board[0][0] == O and board[1][1] == O and board[2][2] == O:
+        return O
+    elif board[0][0] == X and board[1][1] == X and board[2][2] == X:
+        return X
+    elif board[0][2] == O and board[1][1] == O and board[2][0] == O:
+        return O
+    elif board[0][2] == X and board[1][1] == X and board[2][0] == X:
+        return X
+    elif (board[0][0] == X and board[1][0] == X and board[2][0] == X) or (
+            board[0][1] == X and board[1][1] == X and board[2][1] == X) or(
+                board[0][2] == X and board[1][2] == X and board[2][2] == X):
+        return X
+    elif (board[0][0] == O and board[1][0] == O and board[2][0] == O) or (
+            board[0][1] == O and board[1][1] == O and board[2][1] == O) or(
+                board[0][2] == O and board[1][2] == O and board[2][2] == O):
+        return O
     return None
 
 
@@ -86,9 +96,7 @@ def terminal(board):
     Returns True if game is over, False otherwise.
     """
     if winner(board) == None:
-        xcount = len([x for a in board for x in a if x == 'X'])
-        ocount = len([O for a in board for o in a if o == 'O'])
-        if (xcount + ocount) == 9:
+        if (sum(row.count(X) for row in board) + sum(row.count(O) for row in board)) == 9:
             return True
         return False
     else:
@@ -98,9 +106,9 @@ def utility(board):
     """
     Returns 1 if X has won the game, -1 if O has won, 0 otherwise.
     """
-    if winner(board) == 'X':
+    if winner(board) == X:
         return 1
-    elif winner(board) == '0':
+    elif winner(board) == O:
         return -1
     return 0
 
@@ -109,8 +117,35 @@ def minimax(board):
     """
     Returns the optimal action for the current player on the board.
     """
-    bestMove = set()
-    return bestMove
+    if terminal(board):
+        return None
+    if player(board) == X:
+        bestValue = -1
+        bestMove = (-1,-1)
+        if sum(row.count(EMPTY) for row in board) == 9:
+            return bestMove
+        for action in actions(board):
+            moveValue = minValue(result(board,action))
+            if moveValue == 1:
+                bestMove = action
+                break
+            if moveValue > bestValue:
+                bestMove = action
+        return bestMove
+
+    if player(board) == O:
+        bestValue = 1
+        bestMove = (-1,-1)
+        if sum(row.count(EMPTY) for row in board) == 9:
+            return bestMove
+        for action in actions(board):
+            moveValue = minValue(result(board,action))
+            if moveValue == -1:
+                bestMove = action
+                break
+            if moveValue < bestValue:
+                bestMove = action
+        return bestMove
 
 def maxValue(board):
     if terminal(board):
@@ -118,7 +153,9 @@ def maxValue(board):
     else:
         v = float('-inf')
         for action in actions(board):
-            v = max(minValue(result(board, action)))
+            v = max(v, minValue(result(board, action)))
+            if v == 1:
+                break
         return v
 
 
@@ -128,5 +165,7 @@ def minValue(board):
     else:
         v = float('inf')
         for action in actions(board):
-            v = min(maxValue(result(board, action)))
+            v = min(v, maxValue(result(board, action)))
+            if v == -1:
+                break
         return v
