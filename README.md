@@ -2,6 +2,8 @@
 
 A new Flutter project.
 
+Building an interactive tic tac toe mobile app with Local multiplayer, online multiplayer and single player.
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
