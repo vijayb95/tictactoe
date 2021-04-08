@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:tictactoe/model/ticTacList.dart';
 
 class BtnContainer extends StatelessWidget {
   final contVal;
-  const BtnContainer({Key key, this.contVal}) : super(key: key);
+  BtnContainer({Key key, this.contVal}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,10 @@ class BtnContainer extends StatelessWidget {
         disabledTextColor: Theme.of(context).accentColor,
         textColor: Theme.of(context).accentColor,
         splashColor: Colors.orange[300],
-        onPressed: null,
+        onPressed: () {
+          
+          print(contVal);
+        },
         child: Text(contVal.toString()),
       ),
     );
