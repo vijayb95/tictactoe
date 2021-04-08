@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tictactoe/model/ticTacList.dart';
+import 'package:get/get.dart';
+import 'package:tictactoe/controller/ticTacController.dart';
+// import 'package:tictactoe/model/ticTacList.dart';
 
 class BtnContainer extends StatelessWidget {
   final contVal;
@@ -7,9 +9,10 @@ class BtnContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TicTacController controller = Get.put(TicTacController());
     return Container(
-      height: 100,
-      width: 100,
+      height: 105,
+      width: 105,
       child: MaterialButton(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(0.0),
@@ -22,10 +25,15 @@ class BtnContainer extends StatelessWidget {
         textColor: Theme.of(context).accentColor,
         splashColor: Colors.orange[300],
         onPressed: () {
-          
-          print(contVal);
+          controller.changePositionalValue(contVal, 'X');
         },
-        child: Text(contVal.toString()),
+        // child: Text(contVal.toString()),
+        child: Obx(
+          () => Text(
+            '${controller.btValues[contVal]}',
+            style: (Theme.of(context).textTheme.headline3),
+          ),
+        ),
       ),
     );
   }

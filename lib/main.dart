@@ -11,11 +11,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        brightness: Brightness.dark,
-        primaryColor: Colors.orange,
-        accentColor: Colors.orange[400],
-        scaffoldBackgroundColor: Colors.black,
-      ),
+          brightness: Brightness.dark,
+          primaryColor: Colors.orange,
+          accentColor: Colors.orange[400],
+          scaffoldBackgroundColor: Colors.black,
+          textTheme: TextTheme(
+            headline3: TextStyle(color: Colors.orange),
+          )),
       home: Scaffold(
         appBar: AppBar(
           title: Text('Tic Tac Toe!'),

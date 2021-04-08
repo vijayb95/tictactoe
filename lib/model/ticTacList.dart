@@ -24,8 +24,4 @@ class TicTacList {
   void changePositionalValue() {
     btValues[position] = userSymb;
   }
-
-  Map<int, String> get buttonVal {
-    return btValues;
-  }
 }
