@@ -11,6 +11,7 @@ enum PlayerStatus {
 
 enum GameDifficulty {
   Easy,
+  Medium,
   Hard,
 }
 
@@ -37,6 +38,8 @@ class TicTacController extends GetxController {
   String _bot = 'O';
   String _player = 'X';
 
+  var rng = new Random();
+
   PlayerStatus changePositionalValue(int position) {
     if (!_positionAvailable(position)) return PlayerStatus.matchContinue;
     btValues[position] = _player;
@@ -44,7 +47,10 @@ class TicTacController extends GetxController {
     if (currentStatus == PlayerStatus.win) {
       return _matchStatus();
     }
-    difficulty.value == GameDifficulty.Easy ? _easyBotPlay() : _minimaxBotPlay();
+    if (difficulty.value == GameDifficulty.Easy) _easyBotPlay();
+    if (difficulty.value == GameDifficulty.Medium) _mediumBotPlay();
+    if (difficulty.value == GameDifficulty.Hard) _minimaxBotPlay();
+
     return _matchStatus();
   }
 
@@ -80,12 +86,19 @@ class TicTacController extends GetxController {
       }
     }
     if (!validPlay) return;
-    var rng = new Random();
     int newPosition;
     do {
-      newPosition = rng.nextInt(10);
+      newPosition = rng.nextInt(9);
     } while (btValues[newPosition] != '');
     btValues[newPosition] = _bot;
+  }
+
+  void _mediumBotPlay() {
+    int randomNum = rng.nextInt(2);
+    if (randomNum == 0)
+      _easyBotPlay();
+    else
+      _minimaxBotPlay();
   }
 
   //Competitive Hardcore play by the _bot

@@ -65,6 +65,23 @@ class DifficultyChooser extends StatelessWidget {
             ),
             MaterialButton(
               onPressed: () {
+                controller.difficulty.value = GameDifficulty.Medium;
+              },
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(100.0),
+              ),
+              color: Theme.of(context).primaryColor,
+              child: Obx(() => Text(
+                    'Medium',
+                    style: TextStyle(
+                        color:
+                            controller.difficulty.value == GameDifficulty.Medium
+                                ? Colors.white60
+                                : Colors.black87),
+                  )),
+            ),
+            MaterialButton(
+              onPressed: () {
                 controller.difficulty.value = GameDifficulty.Hard;
                 _showMyDialog(
                     'Hope you\'re a Genius!', 'assets/images/genius.png');
